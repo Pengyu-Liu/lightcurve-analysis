@@ -1,18 +1,87 @@
-# Workflow Notes
+# Procedures to Reduce the SoFI Data
 
-This repository follows the original reduction sequence used by the scripts.
-The parameters in each script should be checked for every dataset before
-running the next stage.
+This file records the reduction sequence used by the scripts in this
+repository. The parameters in each script should be checked and edited for
+each dataset before running the next stage.
 
-1. Remove detector cross talk with `preprocess/remove_xtalk.py`.
-2. Build the flat field with `preprocess/flat_field.py`.
-3. Build the illumination correction with `preprocess/illum_cor.py`.
-4. Subtract sky frames with `photometry/skysub_nod.py`.
-5. Detect sources and run aperture photometry with `photometry/phot.py`.
-6. Select reference stars and detrend light curves with `photometry/light_curve.py`.
-7. Run periodogram analysis with `periodogram/period.py` or `periodogram/period_BGLS.py`.
-8. Run injection and recovery sensitivity tests with `sensitivity/sensitivity.py`.
-9. Analyse correlations with `periodogram/correlation.py`.
+## 0. Uncompress Files
 
-The repository is intended to document and share the analysis approach, not to
-provide a fully automatic command-line pipeline.
+Uncompress the raw files, for example with `extract.sh`.
+
+## 1. Remove Cross Talk
+
+Script: `preprocess/remove_xtalk.py`
+
+Input: raw science images, `in_dir = /raw`
+
+Output: cross-talk-corrected science images, `out_dir = /xtalk`
+
+## 2. Reduce Special Dome Flat
+
+Script: `preprocess/flat_field.py`
+
+Input: 8 special dome flats, `in_dir = /flat`
+
+Output: reduced flat, usually `/mflat.fits`
+
+## 3. Reduce Illumination Correction
+
+Script: `preprocess/illum_cor.py`
+
+Input: 16 illumination-correction files, `in_dir = /std`
+
+Output: reduced illumination correction, usually `/illum.fits`
+
+## 4. Subtract Sky by Nods
+
+Script: `photometry/skysub_nod.py`
+
+Subtract sky by nods with the flat field and illumination correction for the
+science frames.
+
+Input: `/xtalk`, `/mflat.fits`, `/illum.fits`, and optionally
+`/bad_pixel_map.fits` from ESO
+
+Output: `/skysub`
+
+## 5. Detect Sources and Run Aperture Photometry
+
+Script: `photometry/phot.py`
+
+Input: `/skysub`
+
+Output: photometry table and helper files, `out_dir = /reduced`
+
+## 6. Select Reference Stars and Detrend Light Curves
+
+Script: `photometry/light_curve.py`
+
+Input: `/reduced`
+
+Output: light curves, `out_dir = /reduced`
+
+## 7. Calculate Periodogram
+
+Script: `periodogram/period.py`
+
+Input: detrended light curves, `in_dir = /reduced`
+
+Output: periodogram, `out_dir = /reduced/plots`
+
+## 8. Calculate Period Sensitivity with Signal Injection
+
+Script: `sensitivity/sensitivity.py`
+
+Input: light curves, `in_dir = /reduced`
+
+Output: sensitivity map, `out_dir = /reduced`
+
+Plot the map with `sensitivity/sensitivity_plot.py`.
+
+## 9. Analyse Light-Curve Correlation
+
+Script: `periodogram/correlation.py`
+
+Input: observation conditions and detrended light curves, `in_dir = /reduced`
+
+Output: correlation plot, `out_dir = /reduced/plots`
