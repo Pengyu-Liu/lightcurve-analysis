@@ -64,5 +64,4 @@ planetary-mass objects", Monthly Notices of the Royal Astronomical Society,
 
 ## License
 
-This repository currently uses the MIT License. Update `LICENSE` if a different
-license is preferred before publishing.
+This repository currently uses the MIT License.
