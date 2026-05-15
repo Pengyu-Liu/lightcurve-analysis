@@ -1,8 +1,7 @@
-# Light-Curve Reduction Example Code
+# Light-Curve Analysis Code
 
-This repository contains research code for reducing near-infrared telescope
-image sequences into differential light curves and time-series diagnostics for interested objects. The raw data are series of telescope images taken
-continuously over several hours.
+This repository contains code for reducing near-infrared telescope
+image sequences into differential light curves and time-series diagnostics for interested objects. The raw data are image series.
 
 
 ## Repository Layout
