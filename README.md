@@ -1,7 +1,7 @@
 # Light-Curve Analysis Code
 
 This repository contains code for reducing near-infrared telescope
-image sequences into differential light curves and time-series diagnostics for interested objects. The raw data are image series.
+image sequences into differential light curves and time-series diagnostics for interested objects. The raw data are image series. Here, it is specified for NTT/SOFI.
 
 
 ## Repository Layout
